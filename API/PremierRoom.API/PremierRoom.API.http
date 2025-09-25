@@ -1,0 +1,6 @@
+@PremierRoom.API_HostAddress = http://localhost:5271
+
+GET {{PremierRoom.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
