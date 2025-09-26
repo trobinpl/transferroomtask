@@ -1,4 +1,4 @@
-﻿using FootballDataOrgProvider.Responses;
+﻿using FootballDataOrg.Responses;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
@@ -10,7 +10,6 @@ public class FootballDataOrgClient
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<FootballDataOrgClient> _logger;
-    private const string PremierLeagueCode = "PL";
 
     public FootballDataOrgClient(HttpClient httpClient, ILogger<FootballDataOrgClient> logger)
     {
@@ -18,14 +17,14 @@ public class FootballDataOrgClient
         _logger = logger;
     }
 
-    public async Task<IEnumerable<TeamResponse>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TeamResponse>> GetTeamsAsync(string competitionCode = "PL", CancellationToken cancellationToken = default)
     {
         try
         {
             _logger.LogInformation("Fetching Premier League teams from Football-Data.org API");
 
-            var response = await _httpClient.GetAsync($"competitions/{PremierLeagueCode}/teams", cancellationToken);
-
+            var response = await _httpClient.GetAsync($"competitions/{competitionCode}/teams", cancellationToken);
+            
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -45,7 +44,7 @@ public class FootballDataOrgClient
         }
     }
 
-    public async Task<TeamResponse> GetTeamByIdAsync(int teamId, CancellationToken cancellationToken = default)
+    public async Task<TeamResponse?> GetTeamByIdAsync(int teamId, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -64,7 +63,7 @@ public class FootballDataOrgClient
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new ArgumentException($"Team with ID {teamId} not found");
+                return null;
             }
 
             throw new HttpRequestException($"API request failed with status {response.StatusCode}");

@@ -1,4 +1,4 @@
-﻿using FootballDataOrgProvider.Responses;
+﻿using FootballDataOrg.Responses;
 using PremierRoom.Application.Models;
 
 namespace PremierRoom.Application.FootballDataService.FootballDataOrg.Mappers;
@@ -9,5 +9,6 @@ public static class TeamMapper
     {
         Id = teamResponse.Id,
         Name = teamResponse.Name,
+        Squad = [.. teamResponse.Squad.Select(p => p.FromApiDto())],
     };
 }

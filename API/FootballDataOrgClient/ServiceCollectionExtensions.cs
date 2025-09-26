@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Polly;
+using Polly.CircuitBreaker;
+using Polly.Extensions.Http;
+using Polly.Retry;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace FootballDataOrg;
@@ -27,45 +32,29 @@ public static class ServiceCollectionExtensions
             client.DefaultRequestHeaders.Add("X-Auth-Token", options.ApiKey);
 
             // Set User-Agent header (good practice for APIs)
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("TransferRoomApp/1.0");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("PremierRoom/1.0");
 
             // Set Accept header
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        });
+        })
+        .AddPolicyHandler(GetRetryPolicy())
+        .AddPolicyHandler(GetCircuitBreakerPolicy()); ;
 
         return services;
     }
 
-    //private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-    //{
-    //    return HttpPolicyExtensions
-    //        .HandleTransientHttpError()
-    //        .OrResult(msg => msg.StatusCode == HttpStatusCode.TooManyRequests)
-    //        .WaitAndRetryAsync(
-    //            retryCount: 3,
-    //            sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-    //            onRetry: (outcome, timespan, retryCount, context) =>
-    //            {
-    //                var logger = context.GetLogger();
-    //                logger?.LogWarning("Retry {RetryCount} after {Delay}ms due to {Result}",
-    //                    retryCount, timespan.TotalMilliseconds, outcome.Result?.StatusCode);
-    //            });
-    //}
+    private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .OrResult(msg => msg.StatusCode == HttpStatusCode.TooManyRequests)
+            .WaitAndRetryAsync(retryCount: 3, sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+    }
 
-    //private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-    //{
-    //    return HttpPolicyExtensions
-    //        .HandleTransientHttpError()
-    //        .CircuitBreakerAsync(
-    //            handledEventsAllowedBeforeBreaking: 5,
-    //            durationOfBreak: TimeSpan.FromSeconds(30),
-    //            onBreak: (result, duration) =>
-    //            {
-    //                // Log circuit breaker opened
-    //            },
-    //            onReset: () =>
-    //            {
-    //                // Log circuit breaker closed
-    //            });
-    //}
+    private static AsyncCircuitBreakerPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+    {
+        return HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, durationOfBreak: TimeSpan.FromSeconds(30));
+    }
 }

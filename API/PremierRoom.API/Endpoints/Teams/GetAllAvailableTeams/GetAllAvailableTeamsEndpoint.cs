@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PremierRoom.Application.FootballDataService;
+using PremierRoom.Application;
+using PremierRoom.Application.Features.Teams.GetAllAvailableTeams;
+using PremierRoom.Application.Models;
 
 namespace PremierRoom.API.Endpoints.Teams.GetAllAvailableTeams;
 
@@ -7,11 +9,13 @@ public static class GetAllAvailableTeamsEndpoint
 {
     public static RouteGroupBuilder AddGetAllAvailableTeamsEndpoint(this RouteGroupBuilder group)
     {
-        group.MapGet("/all", async ([FromServices] IFootballDataService footballDataService, CancellationToken cancellationToken) =>
+        group.MapGet("/all", async ([FromServices] IQueryHandler<GetAllAvailableTeamsQuery, IEnumerable<Team>> handler, CancellationToken cancellationToken) =>
         {
-            var premiereLeagueTeams = await footballDataService.GetPremierLeagueTeamsAsync(cancellationToken);
+            var teams = await handler.HandleAsync(new GetAllAvailableTeamsQuery(), cancellationToken);
 
-            return TypedResults.Ok(premiereLeagueTeams);
+            var response = teams.ToResponseDto();
+
+            return TypedResults.Ok(ApiResponse<GetAllAvailableTeamsResponseDto>.From(response));
         });
 
         return group;

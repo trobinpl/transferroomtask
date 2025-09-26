@@ -1,4 +1,4 @@
-﻿namespace FootballDataOrgProvider.Responses;
+﻿namespace FootballDataOrg.Responses;
 
 public class TeamResponse
 {
