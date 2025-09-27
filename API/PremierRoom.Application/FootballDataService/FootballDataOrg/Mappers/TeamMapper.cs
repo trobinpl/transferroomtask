@@ -9,6 +9,7 @@ public static class TeamMapper
     {
         Id = teamResponse.Id,
         Name = teamResponse.Name,
+        Crest = teamResponse.CrestUrl,
         Squad = [.. teamResponse.Squad.Select(p => p.FromApiDto())],
     };
 }

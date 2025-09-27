@@ -12,6 +12,7 @@ public static class GetAllAvailableTeamsResponseMapper
             {
                 Id = t.Id,
                 Name = t.Name,
+                Crest = t.Crest,
                 Nicknames = [],
             })]
         };

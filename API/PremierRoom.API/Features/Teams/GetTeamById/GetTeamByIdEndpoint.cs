@@ -15,7 +15,6 @@ public static class GetTeamByIdEndpoint
         {
             var result = await handler.HandleAsync(new GetTeamByIdQuery { TeamId = teamId }, cancellationToken);
 
-
             return result.Match(
                 team => TypedResults.Ok(ApiResponse<GetTeamByIdResponseDto>.From(team.ToResponseDto())),
                 notFound => Results.NotFound()

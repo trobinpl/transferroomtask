@@ -12,7 +12,7 @@ namespace FootballDataOrg;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddFootballDataApi(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddFootballDataOrgApi(this IServiceCollection services, IConfiguration configuration)
     {
         // Configure options
         services.Configure<FootballDataApiOptions>(configuration.GetSection(FootballDataApiOptions.SectionName));

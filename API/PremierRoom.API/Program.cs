@@ -8,18 +8,33 @@ using PremierRoom.Application.Features.Teams.GetTeamById;
 using PremierRoom.Application.Features.Teams.GetTeamById.Results;
 using PremierRoom.Application.FootballDataService;
 using PremierRoom.Application.FootballDataService.FootballDataOrg;
+using PremierRoom.Application.FootballDataService.FootballDataOrg.Cache;
 using PremierRoom.Application.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors(options =>
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.WithOrigins("https://localhost:9092")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        });
+    }
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMemoryCache();
 
-builder.Services.AddFootballDataApi(builder.Configuration);
+builder.Services.AddFootballDataOrgApi(builder.Configuration);
 
 builder.Services.AddTransient<IFootballDataService, FootballDataOrgFootballDataService>();
+builder.Services.Decorate<IFootballDataService, CacheableFootballDataOrgFootballDataService>();
 
 builder.Services.AddTransient<IQueryHandler<GetAllAvailableTeamsQuery, IEnumerable<Team>>, GetAllAvailableTeamsQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetTeamByIdQuery, OneOf<Team, SpecifiedTeamNotFound>>, GetTeamByIdQueryHandler>();
@@ -34,6 +49,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.MapGroup("teams")
     .AddGetAllAvailableTeamsEndpoint()

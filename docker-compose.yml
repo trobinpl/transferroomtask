@@ -1,0 +1,32 @@
+services:
+  premierroom.api:
+    image: premierroom
+    container_name: premierroom-api
+    build:
+      context: ./API
+      dockerfile: PremierRoom.API/Dockerfile
+    ports:
+      - 9090:80
+      - 9091:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=ordua
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ordua.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    networks:
+      - premierroom-services
+
+  premierroom.ui:
+    image: premierroom-ui
+    container_name: premierroom-ui
+    build:
+      context: ./UI
+      dockerfile: Dockerfile
+    ports:
+      - 9092:80
+    networks:
+      - premierroom-services
+networks:
+  premierroom-services:
