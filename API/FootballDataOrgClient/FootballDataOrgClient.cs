@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace FootballDataOrg;
 
-public class FootballDataOrgClient
+public class FootballDataOrgClient : IFootballDataOrgClient
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<FootballDataOrgClient> _logger;
@@ -24,7 +24,7 @@ public class FootballDataOrgClient
             _logger.LogInformation("Fetching Premier League teams from Football-Data.org API");
 
             var response = await _httpClient.GetAsync($"competitions/{competitionCode}/teams", cancellationToken);
-            
+
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync(cancellationToken);

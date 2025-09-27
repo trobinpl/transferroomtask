@@ -7,41 +7,41 @@ using Polly.Extensions.Http;
 using Polly.Retry;
 using System.Net;
 using System.Net.Http.Headers;
+using TheSportsDb.Resilience;
 
-namespace FootballDataOrg;
-
+namespace TheSportsDb;
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddFootballDataOrgApi(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddTheSportsDbApi(this IServiceCollection services, IConfiguration configuration)
     {
-        var configurationSection = configuration.GetSection(FootballDataOrgApiOptions.SectionName);
-        services.Configure<FootballDataOrgApiOptions>(configurationSection);
+        var configurationSection = configuration.GetSection(TheSportsDbApiClientOptions.SectionName);
+        services.Configure<TheSportsDbApiClientOptions>(configurationSection);
 
-        services.AddHttpClient<IFootballDataOrgClient, FootballDataOrgClient>((serviceProvider, client) =>
+        services.AddTransient<TheSportsDbFallbackHandler>();
+
+        services.AddHttpClient<ITheSportsDbApiClient, TheSportsDbApiClient>((serviceProvider, client) =>
         {
-            var options = serviceProvider.GetRequiredService<IOptions<FootballDataOrgApiOptions>>().Value;
-            
+            var options = serviceProvider.GetRequiredService<IOptions<TheSportsDbApiClientOptions>>().Value;
+
             client.BaseAddress = new Uri(options.BaseUrl);
 
             client.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
 
-            client.DefaultRequestHeaders.Add("X-Auth-Token", options.ApiKey);
-
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("PremierRoom/1.0");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(options.UserAgent);
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         })
-        .AddPolicyHandler(GetRetryPolicy(configurationSection.Get<FootballDataOrgApiOptions>() ?? new FootballDataOrgApiOptions()))
-        .AddPolicyHandler(GetCircuitBreakerPolicy()); ;
+        .AddHttpMessageHandler<TheSportsDbFallbackHandler>()
+        .AddPolicyHandler(GetRetryPolicy(configurationSection.Get<TheSportsDbApiClientOptions>() ?? new TheSportsDbApiClientOptions()))
+        .AddPolicyHandler(GetCircuitBreakerPolicy());
 
         return services;
     }
 
-    private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy(FootballDataOrgApiOptions options)
+    private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy(TheSportsDbApiClientOptions options)
     {
         return HttpPolicyExtensions
             .HandleTransientHttpError()
-            .OrResult(msg => msg.StatusCode == HttpStatusCode.TooManyRequests)
             .WaitAndRetryAsync(retryCount: options.RetryCount, sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(options.RetryDelaySeconds, retryAttempt)));
     }
 
@@ -51,4 +51,6 @@ public static class ServiceCollectionExtensions
             .HandleTransientHttpError()
             .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, durationOfBreak: TimeSpan.FromSeconds(30));
     }
+
+
 }

@@ -7,9 +7,12 @@ using PremierRoom.Application.Features.Teams.GetAllAvailableTeams;
 using PremierRoom.Application.Features.Teams.GetTeamById;
 using PremierRoom.Application.Features.Teams.GetTeamById.Results;
 using PremierRoom.Application.FootballDataService;
+using PremierRoom.Application.FootballDataService.Enhancers;
+using PremierRoom.Application.FootballDataService.Enhancers.ProfilePicture;
 using PremierRoom.Application.FootballDataService.FootballDataOrg;
 using PremierRoom.Application.FootballDataService.FootballDataOrg.Cache;
 using PremierRoom.Application.Models;
+using TheSportsDb;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,12 +35,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 
 builder.Services.AddFootballDataOrgApi(builder.Configuration);
+builder.Services.AddTheSportsDbApi(builder.Configuration);
 
 builder.Services.AddTransient<IFootballDataService, FootballDataOrgFootballDataService>();
 builder.Services.Decorate<IFootballDataService, CacheableFootballDataOrgFootballDataService>();
 
 builder.Services.AddTransient<IQueryHandler<GetAllAvailableTeamsQuery, IEnumerable<Team>>, GetAllAvailableTeamsQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetTeamByIdQuery, OneOf<Team, SpecifiedTeamNotFound>>, GetTeamByIdQueryHandler>();
+builder.Services.AddTransient<IPlayerEnhancer, TheSportsDbProfilePictureEnhancer>();
 
 var app = builder.Build();
 

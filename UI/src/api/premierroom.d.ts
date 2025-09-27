@@ -62,6 +62,15 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
+                    content: {
+                        "application/json": components["schemas"]["GetTeamByIdResponseDtoApiResponse"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
                     content?: never;
                 };
             };
@@ -90,6 +99,20 @@ export interface components {
         };
         GetAllAvailableTeamsResponseDtoApiResponse: {
             data: components["schemas"]["GetAllAvailableTeamsResponseDto"];
+        };
+        GetTeamByIdResponseDto: {
+            name?: string | null;
+            squad?: components["schemas"]["PlayerDto"][] | null;
+        };
+        GetTeamByIdResponseDtoApiResponse: {
+            data: components["schemas"]["GetTeamByIdResponseDto"];
+        };
+        PlayerDto: {
+            profilePictureUrl?: string | null;
+            name?: string | null;
+            /** Format: date */
+            dateOfBirth?: string;
+            position?: string | null;
         };
     };
     responses: never;

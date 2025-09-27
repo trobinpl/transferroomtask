@@ -7,12 +7,12 @@ namespace PremierRoom.Application.FootballDataService.FootballDataOrg;
 
 public class FootballDataOrgFootballDataService : IFootballDataService
 {
-    private readonly FootballDataOrgClient _footballDataOrgClient;
+    private readonly IFootballDataOrgClient _footballDataOrgClient;
     private readonly ILogger<FootballDataOrgFootballDataService> _logger;
 
     private const string PremiereLeagueCompetitionCode = "PL";
 
-    public FootballDataOrgFootballDataService(FootballDataOrgClient footballDataOrgClient, ILogger<FootballDataOrgFootballDataService> logger)
+    public FootballDataOrgFootballDataService(IFootballDataOrgClient footballDataOrgClient, ILogger<FootballDataOrgFootballDataService> logger)
     {
         _footballDataOrgClient = footballDataOrgClient;
         _logger = logger;
@@ -25,14 +25,16 @@ public class FootballDataOrgFootballDataService : IFootballDataService
 
     public async Task<Team?> GetTeamByIdAsync(int teamId, CancellationToken cancellationToken = default)
     {
-        var team = await _footballDataOrgClient.GetTeamByIdAsync(teamId, cancellationToken);
+        var footballDataOrgTeam = await _footballDataOrgClient.GetTeamByIdAsync(teamId, cancellationToken);
 
-        if (team is null)
+        if (footballDataOrgTeam is null)
         {
             return null;
         }
 
-        return team.FromApiDto();
+        var team = footballDataOrgTeam.FromApiDto();
+
+        return team;
     }
 
     private async Task<IEnumerable<Team>> GetTeams(string competitionCode, CancellationToken cancellationToken = default)

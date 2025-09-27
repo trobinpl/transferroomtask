@@ -16,7 +16,8 @@ public static class GetAllAvailableTeamsEndpoint
             var response = teams.ToResponseDto();
 
             return TypedResults.Ok(ApiResponse<GetAllAvailableTeamsResponseDto>.From(response));
-        });
+        })
+            .Produces<ApiResponse<GetAllAvailableTeamsResponseDto>>(200);
 
         return group;
     }

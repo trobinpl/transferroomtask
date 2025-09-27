@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiClients", "ApiClients", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballDataOrg", "FootballDataOrgClient\FootballDataOrg.csproj", "{2D1085E9-BD05-D2BC-F7AD-26BACF048BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheSportsDb", "TheSportsDb\TheSportsDb.csproj", "{12BCC638-10EC-42E4-A42A-82A8C1A13581}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +31,17 @@ Global
 		{2D1085E9-BD05-D2BC-F7AD-26BACF048BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D1085E9-BD05-D2BC-F7AD-26BACF048BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D1085E9-BD05-D2BC-F7AD-26BACF048BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12BCC638-10EC-42E4-A42A-82A8C1A13581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12BCC638-10EC-42E4-A42A-82A8C1A13581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12BCC638-10EC-42E4-A42A-82A8C1A13581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12BCC638-10EC-42E4-A42A-82A8C1A13581}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2D1085E9-BD05-D2BC-F7AD-26BACF048BA2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{12BCC638-10EC-42E4-A42A-82A8C1A13581} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E05B16D1-3650-435A-BE9B-DAD2EEA9B8BC}

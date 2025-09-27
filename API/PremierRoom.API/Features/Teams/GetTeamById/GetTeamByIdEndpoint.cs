@@ -19,7 +19,9 @@ public static class GetTeamByIdEndpoint
                 team => TypedResults.Ok(ApiResponse<GetTeamByIdResponseDto>.From(team.ToResponseDto())),
                 notFound => Results.NotFound()
             );
-        });
+        })
+            .Produces<ApiResponse<GetTeamByIdResponseDto>>(200)
+            .Produces(404);
 
         return group;
     }

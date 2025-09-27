@@ -1,6 +1,6 @@
 ﻿namespace FootballDataOrg;
 
-public class FootballDataApiOptions
+public class FootballDataOrgApiOptions
 {
     public const string SectionName = "FootballDataApi";
 
