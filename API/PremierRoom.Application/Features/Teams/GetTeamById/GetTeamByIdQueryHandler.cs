@@ -9,11 +9,13 @@ namespace PremierRoom.Application.Features.Teams.GetTeamById;
 public class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, OneOf<Team, SpecifiedTeamNotFound>>
 {
     private readonly IFootballDataService _footballDataService;
-    private readonly IEnumerable<IPlayerEnhancer> _playerEnhancers;
+    private readonly IEnumerable<IEnhancer<Team>> _teamEnhancers;
+    private readonly IEnumerable<IEnhancer<Player>> _playerEnhancers;
 
-    public GetTeamByIdQueryHandler(IFootballDataService footballDataService, IEnumerable<IPlayerEnhancer> playerEnhancers)
+    public GetTeamByIdQueryHandler(IFootballDataService footballDataService, IEnumerable<IEnhancer<Team>> teamEnhancers, IEnumerable<IEnhancer<Player>> playerEnhancers)
     {
         _footballDataService = footballDataService;
+        _teamEnhancers = teamEnhancers;
         _playerEnhancers = playerEnhancers;
     }
 
@@ -26,13 +28,18 @@ public class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, OneOf<Tea
             return new SpecifiedTeamNotFound();
         }
 
-        foreach (var player in team.Squad)
+        foreach(var teamEnhancer in _teamEnhancers)
         {
-            foreach(var playerEnhancer in _playerEnhancers)
-            {
-                await playerEnhancer.Enhance(player, cancellationToken);
-            }
+            await teamEnhancer.EnhanceAsync(team, cancellationToken);
         }
+
+        await Parallel.ForEachAsync(team.Squad, async (player, cancellationToken) =>
+        {
+            foreach (var playerEnhancer in _playerEnhancers)
+            {
+                await playerEnhancer.EnhanceAsync(player, cancellationToken);
+            }
+        });
 
         return team;
     }

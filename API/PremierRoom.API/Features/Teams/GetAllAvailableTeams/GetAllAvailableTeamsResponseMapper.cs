@@ -1,4 +1,5 @@
-﻿using PremierRoom.Application.Models;
+﻿using PremierRoom.API.Features.Teams.GetAllAvailableTeams;
+using PremierRoom.Application.Models;
 
 namespace PremierRoom.API.Endpoints.Teams.GetAllAvailableTeams;
 
@@ -12,8 +13,10 @@ public static class GetAllAvailableTeamsResponseMapper
             {
                 Id = t.Id,
                 Name = t.Name,
+                ShortName = t.ShortName,
+                TLA = t.TLA,
                 Crest = t.Crest,
-                Nicknames = [],
+                Nicknames = [.. t.Nicknames],
             })]
         };
     }

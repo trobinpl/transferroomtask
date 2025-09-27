@@ -51,14 +51,17 @@ export const SpecificTeam: FC = () => {
               {player.profilePictureUrl &&
                 player.profilePictureUrl !== "unknown" && (
                   <img
-                    alt=""
+                    alt={`Profile picture of ${player.name}`}
                     src={player.profilePictureUrl}
                     className="size-12 flex-none rounded-full bg-gray-50"
                   />
                 )}
               <div className="min-w-0 flex-auto">
                 <p className="text-sm/6 font-semibold text-gray-900">
-                  {player.name}
+                  {player.name}{" "}
+                  <span className="text-xs/5 text-gray-500 font-normal">
+                    {player.dateOfBirth}
+                  </span>
                 </p>
                 <p className="mt-1 truncate text-xs/5 text-gray-500">
                   {player.position}

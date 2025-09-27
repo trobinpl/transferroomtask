@@ -1,14 +1,15 @@
 using FootballDataOrg;
 using OneOf;
 using PremierRoom.API.Endpoints.Teams.GetAllAvailableTeams;
-using PremierRoom.API.Endpoints.Teams.GetTeamById;
+using PremierRoom.API.Features.Teams.GetTeamById;
 using PremierRoom.Application;
 using PremierRoom.Application.Features.Teams.GetAllAvailableTeams;
 using PremierRoom.Application.Features.Teams.GetTeamById;
 using PremierRoom.Application.Features.Teams.GetTeamById.Results;
 using PremierRoom.Application.FootballDataService;
 using PremierRoom.Application.FootballDataService.Enhancers;
-using PremierRoom.Application.FootballDataService.Enhancers.ProfilePicture;
+using PremierRoom.Application.FootballDataService.Enhancers.PlayerEnhancers.ProfilePicture;
+using PremierRoom.Application.FootballDataService.Enhancers.TeamEnhancers.Nicknames;
 using PremierRoom.Application.FootballDataService.FootballDataOrg;
 using PremierRoom.Application.FootballDataService.FootballDataOrg.Cache;
 using PremierRoom.Application.Models;
@@ -42,7 +43,8 @@ builder.Services.Decorate<IFootballDataService, CacheableFootballDataOrgFootball
 
 builder.Services.AddTransient<IQueryHandler<GetAllAvailableTeamsQuery, IEnumerable<Team>>, GetAllAvailableTeamsQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetTeamByIdQuery, OneOf<Team, SpecifiedTeamNotFound>>, GetTeamByIdQueryHandler>();
-builder.Services.AddTransient<IPlayerEnhancer, TheSportsDbProfilePictureEnhancer>();
+builder.Services.AddTransient<IEnhancer<Player>, TheSportsDbProfilePictureEnhancer>();
+builder.Services.AddTransient<IEnhancer<Team>, TheSportsDbNicknamesEnhancer>();
 
 var app = builder.Build();
 

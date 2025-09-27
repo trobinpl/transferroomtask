@@ -1,14 +1,25 @@
-﻿namespace PremierRoom.API.Endpoints.Teams.GetAllAvailableTeams;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PremierRoom.API.Features.Teams.GetAllAvailableTeams;
 
 public class GetAllAvailableTeamsResponseDto
 {
-    public List<AvailableTeamDto> AvailableTeams { get; set; } = [];
+    [Required]
+    public required List<AvailableTeamDto> AvailableTeams { get; set; } = [];
 }
 
 public class AvailableTeamDto
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string Crest { get; set; } = string.Empty;
-    public List<string> Nicknames { get; set; } = [];
+    [Required]
+    public required int Id { get; set; }
+    [Required]
+    public required string Name { get; set; } = string.Empty;
+    [Required]
+    public required string ShortName { get; set; } = string.Empty;
+    [Required]
+    public required string TLA { get; set; } = string.Empty;
+    [Required]
+    public required string Crest { get; set; } = string.Empty;
+    [Required]
+    public required List<string> Nicknames { get; set; } = [];
 }

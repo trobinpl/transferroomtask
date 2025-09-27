@@ -18,7 +18,7 @@ public class FootballDataOrgFootballDataService : IFootballDataService
         _logger = logger;
     }
 
-    public async Task<IEnumerable<Team>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<Team>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
     {
         return await GetTeams(PremiereLeagueCompetitionCode, cancellationToken);
     }
@@ -37,13 +37,13 @@ public class FootballDataOrgFootballDataService : IFootballDataService
         return team;
     }
 
-    private async Task<IEnumerable<Team>> GetTeams(string competitionCode, CancellationToken cancellationToken = default)
+    private async Task<List<Team>> GetTeams(string competitionCode, CancellationToken cancellationToken = default)
     {
         try
         {
             var teams = await _footballDataOrgClient.GetTeamsAsync(competitionCode, cancellationToken);
 
-            return teams.Select(t => t.FromApiDto());
+            return teams.Select(t => t.FromApiDto()).ToList();
         }
         catch (Exception ex)
         {

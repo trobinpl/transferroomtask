@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using PremierRoom.Application.Models;
 
-namespace PremierRoom.Application.FootballDataService.Enhancers.ProfilePicture;
+namespace PremierRoom.Application.FootballDataService.Enhancers.PlayerEnhancers.ProfilePicture;
 
-public abstract class ProfilePictureEnhancer : IPlayerEnhancer
+public abstract class ProfilePictureEnhancer : IEnhancer<Player>
 {
     private readonly IMemoryCache _memoryCache;
 
@@ -14,7 +14,7 @@ public abstract class ProfilePictureEnhancer : IPlayerEnhancer
 
     public abstract Task<string> GetProfilePictureUrl(string playerName, CancellationToken cancellationToken = default);
 
-    public async Task Enhance(Player player, CancellationToken cancellationToken = default)
+    public async Task EnhanceAsync(Player player, CancellationToken cancellationToken = default)
     {
         string playerName = $"{player.Firstname} {player.Surname}";
 

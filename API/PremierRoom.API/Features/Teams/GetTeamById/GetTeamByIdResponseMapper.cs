@@ -1,12 +1,13 @@
 ﻿using PremierRoom.Application.Models;
 
-namespace PremierRoom.API.Endpoints.Teams.GetTeamById;
+namespace PremierRoom.API.Features.Teams.GetTeamById;
 
 public static class GetTeamByIdResponseMapper
 {
     public static GetTeamByIdResponseDto ToResponseDto(this Team team) => new()
     {
         Name = team.Name,
+        Nicknames = team.Nicknames.ToList(),
         Squad = [.. team.Squad.Select(p => p.ToResponseDto())],
     };
 

@@ -11,7 +11,7 @@ public class InMemoryFootballDataService : IFootballDataService
         _availableTeams = availableTeams;
     }
 
-    public async Task<IEnumerable<Team>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<Team>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
     {
         return await Task.FromResult(_availableTeams);
     }

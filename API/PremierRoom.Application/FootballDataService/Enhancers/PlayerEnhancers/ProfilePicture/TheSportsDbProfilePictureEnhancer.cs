@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using TheSportsDb;
 
-namespace PremierRoom.Application.FootballDataService.Enhancers.ProfilePicture;
+namespace PremierRoom.Application.FootballDataService.Enhancers.PlayerEnhancers.ProfilePicture;
 
 public class TheSportsDbProfilePictureEnhancer : ProfilePictureEnhancer
 {

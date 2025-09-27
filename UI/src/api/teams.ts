@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query"
 import type { ApiClient } from "./ApiClientContext/ApiClientContext"
+import type { components } from "./premierroom"
 
 const AvailableTeamsQueryKey = ["teams"]
 
@@ -9,10 +10,15 @@ export const getAllAvailableTeamsQueryOptions = (api: ApiClient) =>
     queryFn: () => getAllAvailableTeams(api),
   })
 
-export const getAllAvailableTeams = async (api: ApiClient) => {
+export type AvailableTeam =
+  components["schemas"]["GetAllAvailableTeamsResponseDtoApiResponse"]["data"]["availableTeams"][number]
+
+export const getAllAvailableTeams = async (
+  api: ApiClient
+): Promise<AvailableTeam[]> => {
   const result = await api.GET("/teams/all")
 
-  return result.data?.data.availableTeams
+  return result.data?.data.availableTeams ?? []
 }
 
 const GetTeamByIdQueryKey = (teamId: number) => ["team", teamId]

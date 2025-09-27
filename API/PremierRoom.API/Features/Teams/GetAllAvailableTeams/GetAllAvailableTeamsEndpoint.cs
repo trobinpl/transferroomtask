@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PremierRoom.API.Features.Teams.GetAllAvailableTeams;
 using PremierRoom.Application;
 using PremierRoom.Application.Features.Teams.GetAllAvailableTeams;
 using PremierRoom.Application.Models;

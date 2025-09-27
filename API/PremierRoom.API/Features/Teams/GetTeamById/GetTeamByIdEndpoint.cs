@@ -5,7 +5,7 @@ using PremierRoom.Application.Features.Teams.GetTeamById;
 using PremierRoom.Application.Features.Teams.GetTeamById.Results;
 using PremierRoom.Application.Models;
 
-namespace PremierRoom.API.Endpoints.Teams.GetTeamById;
+namespace PremierRoom.API.Features.Teams.GetTeamById;
 
 public static class GetTeamByIdEndpoint
 {

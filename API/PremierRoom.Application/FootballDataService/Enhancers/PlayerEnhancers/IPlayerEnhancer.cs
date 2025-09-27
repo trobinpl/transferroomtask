@@ -1,6 +1,6 @@
 ﻿using PremierRoom.Application.Models;
 
-namespace PremierRoom.Application.FootballDataService.Enhancers;
+namespace PremierRoom.Application.FootballDataService.Enhancers.PlayerEnhancers;
 
 public interface IPlayerEnhancer
 {

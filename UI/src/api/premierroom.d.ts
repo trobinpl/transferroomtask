@@ -89,19 +89,22 @@ export interface components {
     schemas: {
         AvailableTeamDto: {
             /** Format: int32 */
-            id?: number;
-            name?: string | null;
-            crest?: string | null;
-            nicknames?: string[] | null;
+            id: number;
+            name: string;
+            shortName: string;
+            tla: string;
+            crest: string;
+            nicknames: string[];
         };
         GetAllAvailableTeamsResponseDto: {
-            availableTeams?: components["schemas"]["AvailableTeamDto"][] | null;
+            availableTeams: components["schemas"]["AvailableTeamDto"][];
         };
         GetAllAvailableTeamsResponseDtoApiResponse: {
             data: components["schemas"]["GetAllAvailableTeamsResponseDto"];
         };
         GetTeamByIdResponseDto: {
             name?: string | null;
+            nicknames?: string[] | null;
             squad?: components["schemas"]["PlayerDto"][] | null;
         };
         GetTeamByIdResponseDtoApiResponse: {

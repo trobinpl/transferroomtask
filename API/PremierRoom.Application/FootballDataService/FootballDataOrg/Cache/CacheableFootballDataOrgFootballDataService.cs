@@ -19,7 +19,7 @@ public class CacheableFootballDataOrgFootballDataService : IFootballDataService
         _memoryCache = memoryCache;
     }
 
-    public async Task<IEnumerable<Team>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<Team>> GetPremierLeagueTeamsAsync(CancellationToken cancellationToken = default)
     {
         return await _memoryCache.GetOrCreateAsync(new AllTeamsInLeagueCacheKey("PL"), async (cacheEntry) =>
         {
