@@ -121,7 +121,7 @@ API application is contenerized which enables multiple deployment strategies. On
 
 I have the most experience with CI/CD tooling in Azure DevOps. It has task to handle building and publishing Docker images to a registry
 
-![Azure DevOps Docker task](./images/docker-azure.png.png)
+![Azure DevOps Docker task](./images/docker-azure.png)
 
 After the image is uploaded tool like Keel can be used to automate the deployment.
 
