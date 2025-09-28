@@ -19,8 +19,16 @@ PremierRoom consists of ASP.NET API with React UI. Both applications are contene
 
 When designing the application one of the first design decision to make was what approach to take to data retrieval and data storage. After quick consideration I decided not to use a dedicated data store for the application.
 
+All data is provided by two APIs - The Football Data org and The Sports DB. Those providers were chosen because of the offered coverage and availability of free tiers.
+
 This decision was influenced mostly by two factors: time constraints to complete the task and it being in PoC stage.
 
 Skipping data storage and relying on external data providers speeds up initial development which is considered a most important factor when developing PoC (build, deploy and validate as quickly as possible).
 
-The cons of this approach are also to be noted. Relying on external APIs can make application unstable and susceptible to external providers outages, pricing changes or even them stopping to exist. This is unacceptable in production environment, but it's also a good tradeoff for PoC stage
+The cons of this approach are also to be noted. Relying on external APIs can make application unstable and susceptible to external providers outages, pricing changes or even them stopping to exist. This is unacceptable in production environment, but it's also a good tradeoff for PoC stage.
+
+#### Known issues
+
+##### Rate limits
+
+Both APIs have their own rate limits. Free tiers allow to fetch some amout of data, but if using the application extensively they quickly hit limit thresholds. The application is built so it can works as long as possible uninterrupted (memory caching, fallback strategies in API clients)
