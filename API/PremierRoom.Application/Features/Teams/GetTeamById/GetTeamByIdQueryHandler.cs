@@ -28,7 +28,7 @@ public class GetTeamByIdQueryHandler : IQueryHandler<GetTeamByIdQuery, OneOf<Tea
             return new SpecifiedTeamNotFound();
         }
 
-        foreach(var teamEnhancer in _teamEnhancers)
+        foreach (var teamEnhancer in _teamEnhancers)
         {
             await teamEnhancer.EnhanceAsync(team, cancellationToken);
         }
