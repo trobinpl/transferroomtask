@@ -25,7 +25,7 @@ services:
       context: ./UI
       dockerfile: Dockerfile
     ports:
-      - 9092:80
+      - 9092:443
     networks:
       - premierroom-services
 networks:
