@@ -10,3 +10,7 @@ PremierRoom consists of ASP.NET API with React UI. Both applications are contene
 | --- | --------------------- | ---------------------- |
 | API | http://localhost:9090 | https://localhost:9091 |
 | UI  | -                     | https://localhost:9092 |
+
+## High Level Design
+
+![PrmierRoom High Level Design](./images/hld.png)
