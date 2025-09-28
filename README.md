@@ -144,3 +144,7 @@ Not previously working in football industry I didn't know which API would be the
 ### 2. API rate limits
 
 As mentioned above integrated APIs have different (and sometimes quite strict) rate limits. While they suffice for simple PoC, they are definitely not suitable for production use. If application like this would be to go production-grade, those APIs are still viable options (PoC confirmed they can be used). For production I would implement asynchrounous data scraping and store the results in internal data store improving reliability.
+
+### 3. Integrating multiple APIs inside one application
+
+Being able to return as extensive as possible set of data was important when designing the application. This meant multiple datasources will need to be used. Unfortunately it is not an easy task to match the clubs and players between data providers (they have different IDs, but can also have different names!). For the PoC I went with naive approach - FootballDataOrg provides two types of names for a team: short and long. When querying TheSportsDb for any given team short name is used. If it's not available system uses the long one. This approach came from the obervation that TheSportsDb mostly uses the simplest versions as their primary names (for example: `Arsenal` instead of `Arsenal FC`)
